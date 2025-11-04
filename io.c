@@ -23,7 +23,7 @@ void print_error(const char *func, const char *msg, int err) {
 		fprintf(stderr, "%s: %s: %s\n", program_name, func, msg);
 }
 
-CSCBinaryMatrix *load_sparse_matrix(const char *filename,
+CSCBinaryMatrix *csc_load_matrix(const char *filename,
                                     const char *matrix_name,
                                     const char *field_name)
 {
@@ -84,7 +84,7 @@ CSCBinaryMatrix *load_sparse_matrix(const char *filename,
     if (m->row_idx==NULL || m->col_ptr== NULL) {
         print_error(__func__, "malloc() failed", errno);
 
-        free_sparse_matrix(m);
+        csc_free_matrix(m);
         Mat_VarFree(Problem);
         Mat_Close(matfp);
         return NULL;
@@ -99,7 +99,7 @@ CSCBinaryMatrix *load_sparse_matrix(const char *filename,
     return m;
 }
 
-void free_sparse_matrix(CSCBinaryMatrix *m) {
+void csc_free_matrix(CSCBinaryMatrix *m) {
     if (!m)
         return;
 
@@ -124,7 +124,7 @@ int num_digits(int n) {
     return (int)log10(n) + 1;
 }
 
-void print_sparse_matrix(CSCBinaryMatrix *m) {
+void csc_print_matrix(CSCBinaryMatrix *m) {
     int di = 0;
     int dj = 0;
     unsigned int nline = 1;

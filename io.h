@@ -11,12 +11,9 @@ typedef struct {
     unsigned int *col_ptr;    // start indices of each column (length ncols + 1)
 } CSCBinaryMatrix;
 
-CSCBinaryMatrix *load_sparse_matrix(const char *filename,
-                                    const char *matrix_name,
-                                    const char *field_name);
-
-void free_sparse_matrix(CSCBinaryMatrix *m);
-void print_sparse_matrix(CSCBinaryMatrix *m);
+CSCBinaryMatrix *csc_load_matrix(const char *filename, const char *matrix_name, const char *field_name);
+void csc_free_matrix(CSCBinaryMatrix *m);
+void csc_print_matrix(CSCBinaryMatrix *m);
 
 
 void set_program_name(const char *argv0);

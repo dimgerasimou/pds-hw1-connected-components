@@ -13,12 +13,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    matrix = load_sparse_matrix(argv[1], "Problem", "A");
+    matrix = csc_load_matrix(argv[1], "Problem", "A");
     if (!matrix)
         return 1;
 
-    print_sparse_matrix(matrix);
+    csc_print_matrix(matrix);
 
-    free_sparse_matrix(matrix);
+    csc_free_matrix(matrix);
     return 0;
 }
