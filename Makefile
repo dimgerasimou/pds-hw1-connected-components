@@ -1,8 +1,8 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
-LIBS = -lmatio -lm
+CFLAGS = -Wall -Wextra -O2 -fopenmp
+LIBS = -lmatio -lm -lomp
 
-SRC = main.c io.c cc_union_find_like.c
+SRC = main.c io.c cc_union_find_like.c connected_comp_omp.c 
 OBJ = $(patsubst %.c,obj/%.o,$(SRC))  # obj/main.o obj/io.o
 TARGET = pardis0
 
