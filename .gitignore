@@ -1,5 +1,7 @@
 data/
+obj/
+build/
+bin/
+
 .cache/
 compile_commands.json
-obj/
-pardis0
