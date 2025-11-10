@@ -28,7 +28,9 @@
  * @param n The integer to count digits for.
  * @return Number of digits in n.
  */
-static int num_digits(int n) {
+static int
+num_digits(int n)
+{
     if (n == 0) return 1;
     if (n < 0) n = -n;
 
@@ -42,9 +44,10 @@ static int num_digits(int n) {
 /**
  * @copydoc csc_load_matrix()
  */
-CSCBinaryMatrix *csc_load_matrix(const char *filename,
-                                    const char *matrix_name,
-                                    const char *field_name)
+CSCBinaryMatrix*
+csc_load_matrix(const char *filename,
+                const char *matrix_name,
+                const char *field_name)
 {
     mat_t *matfp = Mat_Open(filename, MAT_ACC_RDONLY);
     if (!matfp) {
@@ -121,7 +124,9 @@ CSCBinaryMatrix *csc_load_matrix(const char *filename,
 /**
  * @copydoc csc_free_matrix()
  */
-void csc_free_matrix(CSCBinaryMatrix *m) {
+void
+csc_free_matrix(CSCBinaryMatrix *m)
+{
     if (!m)
         return;
 
@@ -142,7 +147,9 @@ void csc_free_matrix(CSCBinaryMatrix *m) {
 /**
  * @copydoc csc_print_matrix()
  */
-void csc_print_matrix(CSCBinaryMatrix *m) {
+void
+csc_print_matrix(CSCBinaryMatrix *m)
+{
     int di = 0;
     int dj = 0;
     unsigned int nline = 1;

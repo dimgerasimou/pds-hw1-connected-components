@@ -16,7 +16,6 @@
 
 extern const char *program_name;
 
-
 /**
  * @brief Checks if a string represents an unsigned integer.
  *
@@ -36,7 +35,6 @@ isuint(const char *s)
 
     return 1;
 }
-
 
 /**
  * @brief Prints program usage instructions to stdout.
@@ -72,8 +70,7 @@ parseargs(int argc, char *argv[], int *n_threads, int *n_trials, char **filepath
                 return 1;
             }
             *n_threads = atoi(argv[i]);
-        }
-        else if (!strcmp(argv[i], "-n")) {
+        } else if (!strcmp(argv[i], "-n")) {
             if (i + 1 >= argc) {
                 print_error(__func__, "missing argument for -n", 0);
                 usage();
@@ -86,12 +83,10 @@ parseargs(int argc, char *argv[], int *n_threads, int *n_trials, char **filepath
                 return 1;
             }
             *n_trials = atoi(argv[i]);
-        }
-        else if (!strcmp(argv[i], "-h")) {
+        } else if (!strcmp(argv[i], "-h")) {
             usage();
             return -1;
-        }
-        else {
+        } else {
             if (*filepath != NULL) {
                 print_error(__func__, "multiple file paths specified", 0);
                 usage();
