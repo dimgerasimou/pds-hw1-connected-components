@@ -73,13 +73,25 @@ CILK_OBJS := $(CORE_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/cilk/%.o) \
              $(MAIN_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/cilk/%.o) \
              $(CILK_ALGO:$(SRC_DIR)/%.c=$(OBJ_DIR)/cilk/%.o)
 
+# Benchmark runner sources
+RUNNER_MAIN_SRC := $(SRC_DIR)/runner.c
+RUNNER_UTILS := $(SRC_DIR)/utils/error.c $(SRC_DIR)/utils/args.c
+
+# Runner object files
+RUNNER_OBJS := $(RUNNER_MAIN_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/runner/%.o) \
+               $(RUNNER_UTILS:$(SRC_DIR)/%.c=$(OBJ_DIR)/runner/%.o)
+
+RUNNER_TARGET := $(BIN_DIR)/benchmark_runner
+RUNNER_CFLAGS := $(BASE_CFLAGS)
+RUNNER_LDFLAGS :=
+
 # Target executables
 SEQUENTIAL_TARGET := $(BIN_DIR)/$(PROJECT)_sequential
 OPENMP_TARGET := $(BIN_DIR)/$(PROJECT)_openmp
 PTHREADS_TARGET := $(BIN_DIR)/$(PROJECT)_pthreads
 CILK_TARGET := $(BIN_DIR)/$(PROJECT)_cilk
 
-ALL_TARGETS := $(SEQUENTIAL_TARGET) $(OPENMP_TARGET) $(PTHREADS_TARGET) $(CILK_TARGET)
+ALL_TARGETS := $(SEQUENTIAL_TARGET) $(OPENMP_TARGET) $(PTHREADS_TARGET) $(CILK_TARGET) $(RUNNER_TARGET)
 
 # Pretty Output
 ECHO := /bin/echo -e
@@ -109,6 +121,9 @@ $(OBJ_DIR)/pthreads $(OBJ_DIR)/pthreads/core $(OBJ_DIR)/pthreads/algorithms $(OB
 $(OBJ_DIR)/cilk $(OBJ_DIR)/cilk/core $(OBJ_DIR)/cilk/algorithms $(OBJ_DIR)/cilk/utils:
 	@mkdir -p $@
 
+$(OBJ_DIR)/runner $(OBJ_DIR)/runner/utils:
+	@mkdir -p $@
+
 $(DEP_DIR)/sequential $(DEP_DIR)/sequential/core $(DEP_DIR)/sequential/algorithms $(DEP_DIR)/sequential/utils:
 	@mkdir -p $@
 
@@ -119,6 +134,9 @@ $(DEP_DIR)/pthreads $(DEP_DIR)/pthreads/core $(DEP_DIR)/pthreads/algorithms $(DE
 	@mkdir -p $@
 
 $(DEP_DIR)/cilk $(DEP_DIR)/cilk/core $(DEP_DIR)/cilk/algorithms $(DEP_DIR)/cilk/utils:
+	@mkdir -p $@
+
+$(DEP_DIR)/runner $(DEP_DIR)/runner/utils:
 	@mkdir -p $@
 
 # ============================================
@@ -139,6 +157,9 @@ pthreads: $(PTHREADS_TARGET)
 
 .PHONY: cilk
 cilk: $(CILK_TARGET)
+
+.PHONY: runner
+runner: $(RUNNER_TARGET)
 
 # ============================================
 # Sequential Implementation
@@ -236,11 +257,28 @@ $(OBJ_DIR)/cilk/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/cilk $(DEP_DIR)/cilk
 	@$(ECHO) "$(COLOR_BLUE)Compiling [cilk/main]:$(COLOR_RESET) $<"
 	@$(CLANG) $(CILK_CFLAGS) -MMD -MP -MF $(DEP_DIR)/cilk/$*.d -c $< -o $@
 
+# ============================================
+# Benchmark Runner
+# ============================================
+
+$(RUNNER_TARGET): $(RUNNER_OBJS) | $(BIN_DIR)
+	@$(ECHO) "$(COLOR_GREEN)Linking [runner]:$(COLOR_RESET) $@"
+	@$(CC) $(RUNNER_LDFLAGS) $(RUNNER_OBJS) $(LDLIBS) -o $@
+
+$(OBJ_DIR)/runner/utils/%.o: $(SRC_DIR)/utils/%.c | $(OBJ_DIR)/runner/utils $(DEP_DIR)/runner/utils
+	@$(ECHO) "$(COLOR_BLUE)Compiling [runner/utils]:$(COLOR_RESET) $<"
+	@$(CC) $(RUNNER_CFLAGS) -MMD -MP -MF $(DEP_DIR)/runner/utils/$*.d -c $< -o $@
+
+$(OBJ_DIR)/runner/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)/runner $(DEP_DIR)/runner
+	@$(ECHO) "$(COLOR_BLUE)Compiling [runner]:$(COLOR_RESET) $<"
+	@$(CC) $(RUNNER_CFLAGS) -MMD -MP -MF $(DEP_DIR)/runner/$*.d -c $< -o $@
+
 # Include dependency files
 -include $(SEQUENTIAL_OBJS:.o=.d)
 -include $(OPENMP_OBJS:.o=.d)
 -include $(PTHREADS_OBJS:.o=.d)
 -include $(CILK_OBJS:.o=.d)
+-include $(RUNNER_OBJS:.o=.d)
 
 # ============================================
 # Cleaning
@@ -279,6 +317,9 @@ list-sources:
 	@for f in $(SEQUENTIAL_ALGO) $(OPENMP_ALGO) $(PTHREADS_ALGO) $(CILK_ALGO); do \
 		if [ -f "$$f" ]; then echo "  $$f"; else echo "  $$f (missing)"; fi; \
 	done
+	@$(ECHO) "$(COLOR_MAGENTA)Runner:$(COLOR_RESET)"
+	@echo "  $(RUNNER_MAIN_SRC)"
+	@for f in $(RUNNER_UTILS); do echo "  $$f"; done
 
 # ============================================
 # Information and help
@@ -298,12 +339,14 @@ info:
 	@echo "  OpenMP:       $(OPENMP_CFLAGS)"
 	@echo "  Pthreads:     $(PTHREADS_CFLAGS)"
 	@echo "  Cilk:         $(CILK_CFLAGS)"
+	@echo "  Runner:       $(RUNNER_CFLAGS)"
 	@echo ""
 	@$(ECHO) "$(COLOR_BLUE)Linker Flags:$(COLOR_RESET)"
 	@echo "  Sequential:   $(SEQUENTIAL_LDFLAGS)"
 	@echo "  OpenMP:       $(OPENMP_LDFLAGS)"
 	@echo "  Pthreads:     $(PTHREADS_LDFLAGS)"
 	@echo "  Cilk:         $(CILK_LDFLAGS)"
+	@echo "  Runner:       $(RUNNER_LDFLAGS)"
 	@echo "  Libraries:    $(LDLIBS)"
 	@echo ""
 	@$(ECHO) "$(COLOR_BLUE)Implementations:$(COLOR_RESET)"
@@ -311,12 +354,14 @@ info:
 	@echo "  OpenMP:       $(OPENMP_TARGET)"
 	@echo "  Pthreads:     $(PTHREADS_TARGET)"
 	@echo "  Cilk:         $(CILK_TARGET)"
+	@echo "  Runner:       $(RUNNER_TARGET)"
 	@echo ""
 	@$(ECHO) "$(COLOR_BLUE)Source Files:$(COLOR_RESET)"
 	@echo "  Core:         $(words $(CORE_SRCS)) files"
 	@echo "  Utils:        $(words $(UTILS_SRCS)) files"
 	@echo "  Main:         1 file"
-	@echo "  Total:        $(words $(CORE_SRCS) $(UTILS_SRCS) $(MAIN_SRC)) common files"
+	@echo "  Runner:       $(words $(RUNNER_MAIN_SRC) $(RUNNER_UTILS)) files"
+	@echo "  Total:        $(words $(CORE_SRCS) $(UTILS_SRCS) $(MAIN_SRC) $(RUNNER_MAIN_SRC) $(RUNNER_UTILS)) common files"
 
 .PHONY: list-binaries
 list-binaries:
@@ -349,6 +394,21 @@ check-deps:
 		$(ECHO) "  $(COLOR_YELLOW)○$(COLOR_RESET) tree not found (optional)"
 	@$(ECHO) "$(COLOR_GREEN)All required dependencies found!$(COLOR_RESET)"
 
+# ============================================
+# Convenience targets for running benchmarks
+# ============================================
+
+# Run a comprehensive benchmark
+.PHONY: benchmark
+benchmark: all
+	@$(ECHO) "$(COLOR_YELLOW)Running benchmark...$(COLOR_RESET)"
+	@if [ -z "$(MATRIX)" ]; then \
+		$(ECHO) "$(COLOR_RED)Error: MATRIX variable not set$(COLOR_RESET)"; \
+		$(ECHO) "Usage: make bench-full MATRIX=path/to/matrix.mat [THREADS=8] [TRIALS=10]"; \
+		exit 1; \
+	fi
+	@$(RUNNER_TARGET) $(MATRIX) $(if $(THREADS),$(THREADS),8) $(if $(TRIALS),$(TRIALS),10)
+
 .PHONY: help
 help:
 	@$(ECHO) "$(COLOR_GREEN)════════════════════════════════════════$(COLOR_RESET)"
@@ -361,8 +421,13 @@ help:
 	@$(ECHO) "  $(COLOR_MAGENTA)openmp$(COLOR_RESET)        - Build only OpenMP version"
 	@$(ECHO) "  $(COLOR_MAGENTA)pthreads$(COLOR_RESET)      - Build only Pthreads version"
 	@$(ECHO) "  $(COLOR_MAGENTA)cilk$(COLOR_RESET)          - Build only Cilk version"
+	@$(ECHO) "  $(COLOR_MAGENTA)runner$(COLOR_RESET)        - Build only benchmark runner"
 	@$(ECHO) "  $(COLOR_MAGENTA)clean$(COLOR_RESET)         - Remove build artifacts"
 	@$(ECHO) "  $(COLOR_MAGENTA)rebuild$(COLOR_RESET)       - Clean and build all"
+	@echo ""
+	@$(ECHO) "$(COLOR_BLUE)Benchmarking:$(COLOR_RESET)"
+	@$(ECHO) "  $(COLOR_MAGENTA)benchmark$(COLOR_RESET)    - Full benchmark with custom settings"
+	@$(ECHO) "                   Usage: make benchmark MATRIX=path/to/matrix.mat [THREADS=4] [TRIALS=10]"
 	@echo ""
 	@$(ECHO) "$(COLOR_BLUE)Information:$(COLOR_RESET)"
 	@$(ECHO) "  $(COLOR_MAGENTA)info$(COLOR_RESET)          - Show build configuration"
@@ -373,10 +438,8 @@ help:
 	@$(ECHO) "  $(COLOR_MAGENTA)help$(COLOR_RESET)          - Show this message"
 	@echo ""
 	@$(ECHO) "$(COLOR_BLUE)Examples:$(COLOR_RESET)"
-	@$(ECHO) "  make                    # Build all versions"
-	@$(ECHO) "  make sequential openmp  # Build specific versions"
-	@$(ECHO) "  make clean all          # Clean build"
-	@$(ECHO) "  make check-deps         # Verify all dependencies"
+	@$(ECHO) "  make                                    # Build all versions"
+	@$(ECHO) "  make benchmark MATRIX=data/test.mat THREADS=8 TRIALS=20"
 	@echo ""
 
 .DEFAULT_GOAL := all
@@ -386,4 +449,5 @@ help:
 # ============================================
 
 .PHONY: all clean rebuild tree list-sources info check-deps help \
-        sequential openmp pthreads cilk list-binaries
+        sequential openmp pthreads cilk runner list-binaries \
+        benchmark
