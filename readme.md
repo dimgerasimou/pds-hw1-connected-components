@@ -83,10 +83,10 @@ make rebuild
 
 After building, executables are placed in the `bin/` directory.
 
-Run all implementations and save results:
+Run all implementations:
 
 ```bash
-make benchmark-save MATRIX=data/dictionary28.mat TRIALS=100 THREADS=16
+make benchmark MATRIX=data/dictionary28.mat TRIALS=100 THREADS=16
 ```
 
 This command:
@@ -94,7 +94,15 @@ This command:
 * Runs all algorithms on the given `.mat` file.
 * Performs 100 trials.
 * Uses up to 16 threads where applicable.
-* Saves results as a timestamped JSON in `benchmarks/`.
+* Prints JSON to `stdout`.
+
+Alternatively tou can use:
+
+```bash
+make benchmark-save MATRIX=data/dictionary28.mat TRIALS=100 THREADS=16
+```
+This command is identical with `make benchmark`, but
+saves the results as a timestamped JSON in `benchmarks/`
 
 Example output file:
 
@@ -110,6 +118,12 @@ You can also run the benchmark manually:
 
 ```bash
 bin/benchmark_runner -t <threads> -n <trials> path/to/matrix.mat
+```
+
+Or every algorithm implementation accordingly:
+
+```bash
+bin/connected_components_pthreads -t <threads> -n <trials> path/to/matrix.mat
 ```
 
 **Arguments:**
