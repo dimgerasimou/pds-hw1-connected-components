@@ -28,15 +28,15 @@ extern const char *program_name;
 static int
 isuint(const char *s)
 {
-    if (!s || s[0] == '\0')
-        return 0;
+	if (!s || s[0] == '\0')
+		return 0;
 
-    for (const char *ptr = s; *ptr != '\0'; ptr++) {
-        if (!(*ptr >= '0' && *ptr <= '9'))
-            return 0;
-    }
+	for (const char *ptr = s; *ptr != '\0'; ptr++) {
+		if (!(*ptr >= '0' && *ptr <= '9'))
+			return 0;
+	}
 
-    return 1;
+	return 1;
 }
 
 /**
@@ -46,19 +46,19 @@ isuint(const char *s)
  */
 static void
 usage(void) {
-    fprintf(stderr,
-        "Usage: %s [OPTIONS] <matrix_file>\n\n"
-        "Options:\n"
-        "  -t <threads>       Number of threads to use (default: 8)\n"
-        "  -n <trials>        Number of benchmark trials (default: 3)\n"
-        "  -v <variant>       Algorithm variant (0=standard, 1=optimized, default: 0)\n"
-        "  -h                 Show this help message and exit\n\n"
-        "Arguments:\n"
-        "  matrix_file Path to the input matrix file (Matlab Matrix format)\n\n"
-        "Example:\n"
-        "  %s -t 4 -n 10 -v 1 ./data/matrix.mat\n",
-        program_name, program_name
-    );
+	fprintf(stderr,
+		"Usage: %s [OPTIONS] <matrix_file>\n\n"
+		"Options:\n"
+		"  -t <threads>       Number of threads to use (default: 8)\n"
+		"  -n <trials>        Number of benchmark trials (default: 3)\n"
+		"  -v <variant>       Algorithm variant (0=standard, 1=optimized, default: 0)\n"
+		"  -h                 Show this help message and exit\n\n"
+		"Arguments:\n"
+		"  matrix_file Path to the input matrix file (Matlab Matrix format)\n\n"
+		"Example:\n"
+		"  %s -t 4 -n 10 -v 1 ./data/matrix.mat\n",
+		program_name, program_name
+	);
 }
 
 /**
@@ -71,85 +71,85 @@ parseargs(int argc, char *argv[],
           unsigned int *algorithm_variant,
           char **filepath)
 {
-    *n_threads = 8;
-    *n_trials = 3;
-    *algorithm_variant = 0;
-    *filepath = NULL;
+	*n_threads = 8;
+	*n_trials = 3;
+	*algorithm_variant = 0;
+	*filepath = NULL;
 
-    opterr = 0;
+	opterr = 0;
 
-    int opt;
-    while ((opt = getopt(argc, argv, "+t:n:v:h")) != -1) {
-        switch (opt) {
-        case 't':
-        case 'n': {
-            if (!optarg || !isuint(optarg)) {
-                char err[128];
-                snprintf(err, sizeof(err), "invalid or missing argument for -%c", opt);
-                print_error(__func__, err, 0);
-                usage();
-                return 1;
-            }
-            int val = atoi(optarg);
-            if (!val) {
-                char err[128];
-                snprintf(err, sizeof(err), "%s must be > 0", (opt == 't') ? "threads" : "trials");
-                print_error(__func__, err, 0);
-                usage();
-                return 1;
-            }
-            if (opt == 't') *n_threads = val;
-            else *n_trials = val;
-            break;
-        }
-        case 'h':
-            usage();
-            return -1;
-        
-        case 'v': {
-            if (!optarg || !isuint(optarg)) {
-                print_error(__func__, "invalid argument for -v (must be 0 or 1)", 0);
-                usage();
-                return 1;
-            }
-            int val = atoi(optarg);
-            if (val < 0 || val > 1) {
-                print_error(__func__, "variant must be 0 or 1", 0);
-                usage();
-                return 1;
-            }
-            *algorithm_variant = (unsigned int)val;
-            break;
-        }
+	int opt;
+	while ((opt = getopt(argc, argv, "+t:n:v:h")) != -1) {
+		switch (opt) {
+		case 't':
+		case 'n': {
+			if (!optarg || !isuint(optarg)) {
+				char err[128];
+				snprintf(err, sizeof(err), "invalid or missing argument for -%c", opt);
+				print_error(__func__, err, 0);
+				usage();
+				return 1;
+			}
+			int val = atoi(optarg);
+			if (!val) {
+				char err[128];
+				snprintf(err, sizeof(err), "%s must be > 0", (opt == 't') ? "threads" : "trials");
+				print_error(__func__, err, 0);
+				usage();
+				return 1;
+			}
+			if (opt == 't') *n_threads = val;
+			else *n_trials = val;
+			break;
+		}
+		case 'h':
+			usage();
+			return -1;
+		
+		case 'v': {
+			if (!optarg || !isuint(optarg)) {
+				print_error(__func__, "invalid argument for -v (must be 0 or 1)", 0);
+				usage();
+				return 1;
+			}
+			int val = atoi(optarg);
+			if (val < 0 || val > 1) {
+				print_error(__func__, "variant must be 0 or 1", 0);
+				usage();
+				return 1;
+			}
+			*algorithm_variant = (unsigned int)val;
+			break;
+		}
 
-        case '?':
-        default: {
-            char err[128];
-            if (optopt == 't' || optopt == 'n')
-                snprintf(err, sizeof(err), "missing argument for -%c", optopt);
-            else
-                snprintf(err, sizeof(err), "unknown option '-%c'", optopt ? optopt : '?');
-            print_error(__func__, err, 0);
-            usage();
-            return 1;
-        }
-        }
-    }
+		case '?':
+		default: {
+			char err[128];
+			if (optopt == 't' || optopt == 'n')
+				snprintf(err, sizeof(err), "missing argument for -%c", optopt);
+			else
+				snprintf(err, sizeof(err), "unknown option '-%c'", optopt ? optopt : '?');
+			print_error(__func__, err, 0);
+			usage();
+			return 1;
+		}
+		}
+	}
 
-    if (optind < argc) {
-        *filepath = argv[optind];
-        if (access(*filepath, R_OK) != 0) {
-            char err[256];
-            snprintf(err, sizeof(err), "cannot access file: \"%s\"", *filepath);
-            print_error(__func__, err, errno);
-            usage();
-            return 1;
-        }
-    } else {
-        print_error(__func__, "no input file specified", 0);
-        usage();
-        return 1;
-    }
+	if (optind < argc) {
+		*filepath = argv[optind];
+		if (access(*filepath, R_OK) != 0) {
+			char err[256];
+			snprintf(err, sizeof(err), "cannot access file: \"%s\"", *filepath);
+			print_error(__func__, err, errno);
+			usage();
+			return 1;
+		}
+	} else {
+		print_error(__func__, "no input file specified", 0);
+		usage();
+		return 1;
+	}
 
-    return 0;
+	return 0;
 }

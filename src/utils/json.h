@@ -21,11 +21,11 @@
  * execution, including system info, matrix info, parameters, and results.
  */
 typedef struct {
-    SystemInfo sys_info;          /**< System information */
-    MatrixInfo matrix_info;       /**< Matrix/graph information */
-    BenchmarkInfo benchmark_info; /**< Benchmark parameters */
-    Result result;                /**< Algorithm result */
-    int valid;                    /**< Flag indicating successful parsing */
+	SystemInfo sys_info;          /**< System information */
+	MatrixInfo matrix_info;       /**< Matrix/graph information */
+	BenchmarkInfo benchmark_info; /**< Benchmark parameters */
+	Result result;                /**< Algorithm result */
+	int valid;                    /**< Flag indicating successful parsing */
 } BenchmarkData;
 
 /**

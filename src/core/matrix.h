@@ -19,11 +19,11 @@
  * Non-zero entries are implicitly 1. Stores only row indices and column pointers.
  */
 typedef struct {
-    size_t nrows;       /**< Number of rows in the matrix */
-    size_t ncols;       /**< Number of columns in the matrix */
-    size_t nnz;         /**< Number of non-zero (1) entries */
-    uint32_t *row_idx;  /**< Row indices of non-zero elements (length nnz) */
-    uint32_t *col_ptr;  /**< Column pointers (length ncols + 1) */
+	size_t nrows;       /**< Number of rows in the matrix */
+	size_t ncols;       /**< Number of columns in the matrix */
+	size_t nnz;         /**< Number of non-zero (1) entries */
+	uint32_t *row_idx;  /**< Row indices of non-zero elements (length nnz) */
+	uint32_t *col_ptr;  /**< Column pointers (length ncols + 1) */
 } CSCBinaryMatrix;
 
 /** @brief Load a sparse binary matrix from a .mat or .mtx file.

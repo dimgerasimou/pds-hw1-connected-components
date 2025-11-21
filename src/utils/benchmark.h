@@ -20,11 +20,11 @@
  * benchmark trials.
  */
 typedef struct {
-    double mean_time_s;    /**< Mean execution time in seconds */
-    double std_dev_s;      /**< Standard deviation of execution time in seconds */
-    double median_time_s;  /**< Median execution time in seconds */
-    double min_time_s;     /**< Minimum execution time in seconds */
-    double max_time_s;     /**< Maximum execution time in seconds */
+	double mean_time_s;    /**< Mean execution time in seconds */
+	double std_dev_s;      /**< Standard deviation of execution time in seconds */
+	double median_time_s;  /**< Median execution time in seconds */
+	double min_time_s;     /**< Minimum execution time in seconds */
+	double max_time_s;     /**< Maximum execution time in seconds */
 } Statistics;
 
 /**
@@ -34,15 +34,15 @@ typedef struct {
  * Contains all measured and computed metrics for one algorithm implementation.
  */
 typedef struct {
-    char algorithm[32];                  /**< Algorithm name (e.g., "Sequential", "OpenMP") */
-    unsigned int algorithm_variant;      /**< Algorithm variant (0: original, 1: optimized) */
-    unsigned int connected_components;   /**< Number of connected components found */
-    Statistics stats;                    /**< Timing statistics */
-    double throughput_edges_per_sec;     /**< Processing throughput in edges per second */
-    double memory_peak_mb;               /**< Peak memory usage in megabytes */
-    double speedup;                      /**< Speedup relative to sequential baseline */
-    double efficiency;                   /**< Parallel efficiency (speedup / threads) */
-    unsigned int has_metrics;            /**< Flag indicating if speedup/efficiency are valid */
+	char algorithm[32];                  /**< Algorithm name (e.g., "Sequential", "OpenMP") */
+	unsigned int algorithm_variant;      /**< Algorithm variant (0: original, 1: optimized) */
+	unsigned int connected_components;   /**< Number of connected components found */
+	Statistics stats;                    /**< Timing statistics */
+	double throughput_edges_per_sec;     /**< Processing throughput in edges per second */
+	double memory_peak_mb;               /**< Peak memory usage in megabytes */
+	double speedup;                      /**< Speedup relative to sequential baseline */
+	double efficiency;                   /**< Parallel efficiency (speedup / threads) */
+	unsigned int has_metrics;            /**< Flag indicating if speedup/efficiency are valid */
 } Result;
 
 /**
@@ -53,10 +53,10 @@ typedef struct {
  * the benchmark was executed.
  */
 typedef struct {
-    char timestamp[32];    /**< ISO 8601 timestamp of benchmark execution */
-    char cpu_info[128];    /**< CPU model and specifications */
-    double ram_mb;         /**< Total RAM in megabytes */
-    double swap_mb;        /**< Total swap space in megabytes */
+	char timestamp[32];    /**< ISO 8601 timestamp of benchmark execution */
+	char cpu_info[128];    /**< CPU model and specifications */
+	double ram_mb;         /**< Total RAM in megabytes */
+	double swap_mb;        /**< Total swap space in megabytes */
 } SystemInfo;
 
 /**
@@ -67,10 +67,10 @@ typedef struct {
  * components algorithm, including its dimensions and sparsity.
  */
 typedef struct {
-    char path[256];     /**< File path to the matrix */
-    unsigned int rows;  /**< Number of rows in the matrix */
-    unsigned int cols;  /**< Number of columns in the matrix */
-    unsigned int nnz;   /**< Number of non-zero elements (edges in graph) */
+	char path[256];     /**< File path to the matrix */
+	unsigned int rows;  /**< Number of rows in the matrix */
+	unsigned int cols;  /**< Number of columns in the matrix */
+	unsigned int nnz;   /**< Number of non-zero elements (edges in graph) */
 } MatrixInfo;
 
 /**
@@ -80,19 +80,19 @@ typedef struct {
  * Contains the configuration parameters used for running the benchmark.
  */
 typedef struct {
-    unsigned int threads;  /**< Number of threads used for parallel execution */
-    unsigned int trials;   /**< Number of benchmark trials performed */
+	unsigned int threads;  /**< Number of threads used for parallel execution */
+	unsigned int trials;   /**< Number of benchmark trials performed */
 } BenchmarkInfo;
 
 /**
  * @brief Holds benchmark results and metadata.
  */
 typedef struct {
-    double *times;                /**< Array of trial execution times in seconds. */
-    SystemInfo sys_info;          /**< System information */
-    MatrixInfo matrix_info;       /**< Matrix/graph information */
-    BenchmarkInfo benchmark_info; /**< Benchmark parameters */
-    Result result;                /**< Algorithm result */
+	double *times;                /**< Array of trial execution times in seconds. */
+	SystemInfo sys_info;          /**< System information */
+	MatrixInfo matrix_info;       /**< Matrix/graph information */
+	BenchmarkInfo benchmark_info; /**< Benchmark parameters */
+	Result result;                /**< Algorithm result */
 } Benchmark;
 
 /**
