@@ -240,214 +240,38 @@ CILK_NWORKERS=8 bin/connected_components_cilk -v 0 -t 8 -n 10 data/matrix.mtx
 
 ### Example Benchmark: Large Social Network Graph
 
-**Dataset:** LiveJournal social network (soc-LiveJournal1.mtx)
-- **Nodes:** 4,847,571
-- **Edges:** 68,993,773
+**Dataset:** LiveJournal social network (com-LiveJournal.mtx)
+- **Nodes:** 3,997,962
+- **Edges:** 69,362,378
 - **System:** Intel Core i7-11800H @ 2.30GHz, 8 threads
-- **Connected Components Found:** 1,876
+- **Connected Components Found:** 1
 
 #### **Algorithm Type:** Label Propagation
 
-| Algorithm | Mean Time (s) | Throughput (Medges/s) | Speedup | Efficiency |
-|-----------|---------------|----------------------|---------|------------|
-| Sequential | 0.5048 | 136.7 | 1.00× | 12.5% |
-| OpenMP | 0.1149 | 600.4 | 4.39× | 54.9% |
-| Pthreads | 0.1198 | 575.8 | 4.21× | 52.7% |
-| **OpenCilk** | **0.1018** | **677.5** | **4.96×** | **62.0%** |
+| Algorithm  | Mean Time (s) | Throughput (Medges/s) | Speedup | Efficiency |
+|------------|---------------|-----------------------|---------|------------|
+| Sequential | 0.4392        | 157.9                 | 1.00×   | 100%       |
+| OpenMP     | 0.1031        | 672.1                 | 4.26×   | 53.2%      |
+| Pthreads   | 0.1101        | 630.2                 | 3.99×   | 49.9%      |
+|**OpenCilk**| **0.0859**    | **807.3**             |**5.11×**| **63.9%**  |
 
 ---
 
 #### **Algorithm Type:** Union Find
 
-| Algorithm | Mean Time (s) | Throughput (Medges/s) | Speedup | Efficiency |
-|-----------|---------------|----------------------|---------|------------|
-| Sequential | 0.1994 | 346.7 | 1.00× | 12.5% |
-| **OpenMP** | **0.0483** | **1426.5** | **4.12×** | **51.5%** |
-| Pthreads | 0.0522 | 1319.3 | 3.81× | 47.7% |
-| OpenCilk | 0.0604 | 1144.1 | 3.31× | 41.3% |
-
-### Plain JSON output of example
-
-```json
-{
-  "sys_info": {
-    "timestamp": "2025-11-22T19:09:50",
-    "cpu_info": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
-    "ram_mb": 15687.50,
-    "swap_mb": 16384.00
-  },
-  "matrix_info": {
-    "path": "data/soc-LiveJournal1.mtx",
-    "rows": 4847571,
-    "cols": 4847571,
-    "nnz": 68993773
-  },
-  "benchmark_info": {
-    "threads": 8,
-    "trials": 10
-  },
-  "results": [
-    {
-      "algorithm": "Sequential",
-      "algorithm_variant": 0,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.504784,
-        "std_dev_s": 0.002233,
-        "median_time_s": 0.504660,
-        "min_time_s": 0.501611,
-        "max_time_s": 0.509929
-      },
-      "throughput_edges_per_sec": 136679688.87,
-      "memory_peak_mb": 829.15,
-      "speedup": 1.0000,
-      "efficiency": 0.1250
-    },
-    {
-      "algorithm": "OpenMP",
-      "algorithm_variant": 0,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.114920,
-        "std_dev_s": 0.002828,
-        "median_time_s": 0.113804,
-        "min_time_s": 0.112612,
-        "max_time_s": 0.122084
-      },
-      "throughput_edges_per_sec": 600362003.28,
-      "memory_peak_mb": 829.46,
-      "speedup": 4.3925,
-      "efficiency": 0.5491
-    },
-    {
-      "algorithm": "Pthreads",
-      "algorithm_variant": 0,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.119826,
-        "std_dev_s": 0.002600,
-        "median_time_s": 0.119149,
-        "min_time_s": 0.116934,
-        "max_time_s": 0.123593
-      },
-      "throughput_edges_per_sec": 575781987.96,
-      "memory_peak_mb": 829.16,
-      "speedup": 4.2126,
-      "efficiency": 0.5266
-    },
-    {
-      "algorithm": "OpenCilk",
-      "algorithm_variant": 0,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.101828,
-        "std_dev_s": 0.008621,
-        "median_time_s": 0.098220,
-        "min_time_s": 0.096335,
-        "max_time_s": 0.120859
-      },
-      "throughput_edges_per_sec": 677549394.52,
-      "memory_peak_mb": 829.34,
-      "speedup": 4.9572,
-      "efficiency": 0.6197
-    }
-  ]
-}
-{
-  "sys_info": {
-    "timestamp": "2025-11-22T19:10:19",
-    "cpu_info": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
-    "ram_mb": 15687.50,
-    "swap_mb": 16384.00
-  },
-  "matrix_info": {
-    "path": "data/soc-LiveJournal1.mtx",
-    "rows": 4847571,
-    "cols": 4847571,
-    "nnz": 68993773
-  },
-  "benchmark_info": {
-    "threads": 8,
-    "trials": 10
-  },
-  "results": [
-    {
-      "algorithm": "Sequential",
-      "algorithm_variant": 1,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.199402,
-        "std_dev_s": 0.006378,
-        "median_time_s": 0.199891,
-        "min_time_s": 0.192498,
-        "max_time_s": 0.213147
-      },
-      "throughput_edges_per_sec": 346003305.55,
-      "memory_peak_mb": 829.16,
-      "speedup": 1.0000,
-      "efficiency": 0.1250
-    },
-    {
-      "algorithm": "OpenMP",
-      "algorithm_variant": 1,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.048363,
-        "std_dev_s": 0.001803,
-        "median_time_s": 0.048374,
-        "min_time_s": 0.044322,
-        "max_time_s": 0.050804
-      },
-      "throughput_edges_per_sec": 1426577808.47,
-      "memory_peak_mb": 829.39,
-      "speedup": 4.1230,
-      "efficiency": 0.5154
-    },
-    {
-      "algorithm": "Pthreads",
-      "algorithm_variant": 1,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.052296,
-        "std_dev_s": 0.001578,
-        "median_time_s": 0.052280,
-        "min_time_s": 0.050477,
-        "max_time_s": 0.054823
-      },
-      "throughput_edges_per_sec": 1319284708.14,
-      "memory_peak_mb": 829.08,
-      "speedup": 3.8129,
-      "efficiency": 0.4766
-    },
-    {
-      "algorithm": "OpenCilk",
-      "algorithm_variant": 1,
-      "connected_components": 1876,
-      "statistics": {
-        "mean_time_s": 0.060305,
-        "std_dev_s": 0.003959,
-        "median_time_s": 0.059563,
-        "min_time_s": 0.055324,
-        "max_time_s": 0.067659
-      },
-      "throughput_edges_per_sec": 1144086630.56,
-      "memory_peak_mb": 829.33,
-      "speedup": 3.3066,
-      "efficiency": 0.4133
-    }
-  ]
-}
-
-```
+| Algorithm  | Mean Time (s) | Throughput (Medges/s) | Speedup | Efficiency |
+|------------|---------------|-----------------------|---------|------------|
+| Sequential | 0.1800        | 385.3                 | 1.00×   | 100%       |
+| **OpenMP** | **0.0472**    | **1469.9**            |**3.82×**| **47.7%**  |
+| Pthreads   | 0.0492        | 1411.2                | 3.66×   | 45.8%      |
+| OpenCilk   | 0.0528        | 1314.2                | 3.41×   | 42.6%      |
 
 ### Metrics Explained
 
 - **Mean Time:** Average execution time across all trials
-- **Standard Deviation:** Measure of timing variability
 - **Throughput:** Edges processed per second (higher is better)
-- **Speedup:** Performance improvement over sequential (T_sequential / T_parallel)
-- **Efficiency:** How well parallelism is utilized (Speedup / Number of threads)
-
+- **Speedup:** Performance improvement over sequential (`T_sequential` / `T_parallel`)
+- **Efficiency:** How well parallelism is utilized (`Speedup` / `Number of threads`)
 
 ---
 
