@@ -1,0 +1,168 @@
+{
+  "sys_info": {
+    "timestamp": "2025-11-22T19:01:23",
+    "cpu_info": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
+    "ram_mb": 15687.50,
+    "swap_mb": 16384.00
+  },
+  "matrix_info": {
+    "path": "data/mawi_201512020330.mtx",
+    "rows": 226196185,
+    "cols": 226196185,
+    "nnz": 480047894
+  },
+  "benchmark_info": {
+    "threads": 8,
+    "trials": 10
+  },
+  "results": [
+    {
+      "algorithm": "Sequential",
+      "algorithm_variant": 0,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 2.712435,
+        "std_dev_s": 0.026267,
+        "median_time_s": 2.699837,
+        "min_time_s": 2.687990,
+        "max_time_s": 2.752747
+      },
+      "throughput_edges_per_sec": 176980450.55,
+      "memory_peak_mb": 7222.00,
+      "speedup": 1.0000,
+      "efficiency": 0.1250
+    },
+    {
+      "algorithm": "OpenMP",
+      "algorithm_variant": 0,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 1.435214,
+        "std_dev_s": 0.005001,
+        "median_time_s": 1.433754,
+        "min_time_s": 1.429754,
+        "max_time_s": 1.445500
+      },
+      "throughput_edges_per_sec": 334478229.01,
+      "memory_peak_mb": 7222.26,
+      "speedup": 1.8899,
+      "efficiency": 0.2362
+    },
+    {
+      "algorithm": "Pthreads",
+      "algorithm_variant": 0,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 1.516859,
+        "std_dev_s": 0.013351,
+        "median_time_s": 1.513586,
+        "min_time_s": 1.506482,
+        "max_time_s": 1.553178
+      },
+      "throughput_edges_per_sec": 316474869.74,
+      "memory_peak_mb": 7221.98,
+      "speedup": 1.7882,
+      "efficiency": 0.2235
+    },
+    {
+      "algorithm": "OpenCilk",
+      "algorithm_variant": 0,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 1.495194,
+        "std_dev_s": 0.094201,
+        "median_time_s": 1.460214,
+        "min_time_s": 1.355992,
+        "max_time_s": 1.664397
+      },
+      "throughput_edges_per_sec": 321060552.53,
+      "memory_peak_mb": 7222.23,
+      "speedup": 1.8141,
+      "efficiency": 0.2268
+    }
+  ]
+}
+{
+  "sys_info": {
+    "timestamp": "2025-11-22T19:05:02",
+    "cpu_info": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
+    "ram_mb": 15687.50,
+    "swap_mb": 16384.00
+  },
+  "matrix_info": {
+    "path": "data/mawi_201512020330.mtx",
+    "rows": 226196185,
+    "cols": 226196185,
+    "nnz": 480047894
+  },
+  "benchmark_info": {
+    "threads": 8,
+    "trials": 10
+  },
+  "results": [
+    {
+      "algorithm": "Sequential",
+      "algorithm_variant": 1,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 1.298809,
+        "std_dev_s": 0.041058,
+        "median_time_s": 1.312784,
+        "min_time_s": 1.247647,
+        "max_time_s": 1.352082
+      },
+      "throughput_edges_per_sec": 369606250.84,
+      "memory_peak_mb": 7222.04,
+      "speedup": 1.0000,
+      "efficiency": 0.1250
+    },
+    {
+      "algorithm": "OpenMP",
+      "algorithm_variant": 1,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 0.712094,
+        "std_dev_s": 0.042163,
+        "median_time_s": 0.710768,
+        "min_time_s": 0.648197,
+        "max_time_s": 0.799151
+      },
+      "throughput_edges_per_sec": 674135451.70,
+      "memory_peak_mb": 7222.16,
+      "speedup": 1.8239,
+      "efficiency": 0.2280
+    },
+    {
+      "algorithm": "Pthreads",
+      "algorithm_variant": 1,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 0.778319,
+        "std_dev_s": 0.006907,
+        "median_time_s": 0.780103,
+        "min_time_s": 0.767423,
+        "max_time_s": 0.786025
+      },
+      "throughput_edges_per_sec": 616774952.89,
+      "memory_peak_mb": 7222.15,
+      "speedup": 1.6687,
+      "efficiency": 0.2086
+    },
+    {
+      "algorithm": "OpenCilk",
+      "algorithm_variant": 1,
+      "connected_components": 3971144,
+      "statistics": {
+        "mean_time_s": 0.616862,
+        "std_dev_s": 0.053029,
+        "median_time_s": 0.598519,
+        "min_time_s": 0.572740,
+        "max_time_s": 0.755365
+      },
+      "throughput_edges_per_sec": 778209758.81,
+      "memory_peak_mb": 7222.27,
+      "speedup": 2.1055,
+      "efficiency": 0.2632
+    }
+  ]
+}
