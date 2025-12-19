@@ -4,7 +4,9 @@
   <img src="https://img.shields.io/badge/parallelism-OpenMP%20%7C%20Pthreads%20%7C%20OpenCilk-blue">
 </p>
 
-Assignment #1 for the Parallel and Distributed Systems course.
+Assignment #1 of the **Parallel and Distributed Systems** coursework:
+[parallel-distributed-systems](https://github.com/dimgerasimou/parallel-distributed-systems)
+
 
 Parallel implementations of the **connected components** problem for sparse graphs, focusing on **shared-memory parallelism**, multiple algorithmic variants, and **performance benchmarking**.
 
